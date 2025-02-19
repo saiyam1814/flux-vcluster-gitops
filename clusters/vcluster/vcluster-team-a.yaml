@@ -17,8 +17,8 @@ spec:
   install:
     createNamespace: true
   values:
-    sync:
-      extraArgs:
-        - --tls-san=env-team-a.env-team-a.svc.cluster.local
-        - --out-kube-config-server=https://env-team-a.env-team-a.svc.cluster.local
+    controlPlane:
+      distro:
+        k8s:
+          version: v1.32.0
 
