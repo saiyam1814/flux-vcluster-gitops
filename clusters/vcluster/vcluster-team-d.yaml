@@ -1,12 +1,12 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: env-team-c
+  name: env-team-d  # ✅ Use fixed name, not a variable
   namespace: flux-system
 spec:
   interval: 1m
-  releaseName: env-team-c
-  targetNamespace: env-team-c
+  releaseName: env-team-d
+  targetNamespace: env-team-d
   chart:
     spec:
       chart: vcluster-eks
@@ -19,6 +19,6 @@ spec:
   values:
     syncer:
       extraArgs:
-        - --tls-san=env-team-c.env-team-c.svc.cluster.local
-        - --out-kube-config-server=https://env-team-c.env-team-c.svc.cluster.local
+        - --tls-san=env-team-a.env-team-a.svc.cluster.local
+        - --out-kube-config-server=https://env-team-a.env-team-a.svc.cluster.local
 

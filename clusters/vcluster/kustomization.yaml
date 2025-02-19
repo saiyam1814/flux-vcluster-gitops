@@ -4,4 +4,5 @@ resources:
   - vcluster-team-a.yaml
   - vcluster-team-b.yaml
   - vcluster-team-c.yaml
+  - vcluster-team-d.yaml
 

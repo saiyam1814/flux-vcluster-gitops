@@ -1,6 +1,6 @@
 #!/bin/bash
 
-teams=("team-a" "team-b" "team-c")
+teams=("team-a" "team-b" "team-c" "team-d")
 
 for team in "${teams[@]}"; do
     echo "Processing team: $team"
