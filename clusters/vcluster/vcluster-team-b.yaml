@@ -17,7 +17,7 @@ spec:
   install:
     createNamespace: true
   values:
-    syncer:
+    sync:
       extraArgs:
         - --tls-san=env-team-b.env-team-b.svc.cluster.local
         - --out-kube-config-server=https://env-team-b.env-team-b.svc.cluster.local
