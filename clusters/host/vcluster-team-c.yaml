@@ -13,5 +13,5 @@ spec:
   wait: true
   postBuild:
     substitute:
-      env: team-c
+      env: team-c  # ✅ Replace for team-c
 

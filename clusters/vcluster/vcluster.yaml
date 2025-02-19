@@ -1,12 +1,12 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: env-{{env}}  
+  name: env-$(env)  # ✅ Use $(env) which will be substituted by Flux
   namespace: flux-system
 spec:
   interval: 1m
-  releaseName: env-{{env}}
-  targetNamespace: env-{{env}}
+  releaseName: env-$(env)
+  targetNamespace: env-$(env)
   chart:
     spec:
       chart: vcluster-eks
@@ -16,4 +16,9 @@ spec:
         name: loft-sh
   install:
     createNamespace: true
+  values:
+    syncer:
+      extraArgs:
+        - --tls-san=env-$(env).env-$(env).svc.cluster.local
+        - --out-kube-config-server=https://env-$(env).env-$(env).svc.cluster.local
 
