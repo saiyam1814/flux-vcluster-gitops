@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+metadata:
+  name: vcluster-deployment
+  namespace: flux-system
+spec:
+  interval: 5m
+  prune: true
+  path: "./clusters/host"
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  components:
+    - vcluster.yaml
+
