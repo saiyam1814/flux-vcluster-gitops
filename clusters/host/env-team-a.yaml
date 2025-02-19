@@ -2,7 +2,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: env-team-a
-  namespace: env-team-a
+  namespace: flux-system
 spec:
   interval: 10m0s
   prune: true
@@ -18,4 +18,12 @@ spec:
     secretRef:
       name: vc-env-team-a
       key: config
+  patches:
+    - target:
+        kind: Namespace
+      patch: |-
+        - op: add
+          path: /metadata
+          value:
+            name: env-team-a
 
