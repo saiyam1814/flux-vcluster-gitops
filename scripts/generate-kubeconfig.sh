@@ -1,22 +1,18 @@
 #!/bin/bash
 
-VCLUSTER_LIST=("vcluster1" "vcluster2")  # Add all vClusters you want
+environments=("dev" "qa" "prod")
 
-for VCLUSTER in "${VCLUSTER_LIST[@]}"; do
-  KUBECONFIG_PATH=~/.kube/${VCLUSTER}-kubeconfig
+for env in "${environments[@]}"; do
+  namespace="vcluster-$env"
+  secret_name="vc-$env-kubeconfig"
 
-  echo "🔄 Generating kubeconfig for ${VCLUSTER}..."
-  vcluster connect ${VCLUSTER} --namespace host-cluster --server --loginshell=false > ${KUBECONFIG_PATH}
+  # Generate KubeConfig
+  vcluster connect "vcluster-$env" -n "$namespace" --update-current=false --print > kubeconfig-$env.yaml
 
-  if [[ ! -f "${KUBECONFIG_PATH}" ]]; then
-    echo "❌ Failed to generate kubeconfig for ${VCLUSTER}"
-    continue
-  fi
-
-  kubectl create secret generic ${VCLUSTER}-kubeconfig \
-    --from-file=kubeconfig=${KUBECONFIG_PATH} \
-    -n flux-system --dry-run=client -o yaml | kubectl apply -f -
-
-  echo "✅ Kubeconfig for ${VCLUSTER} stored in Kubernetes!"
+  # Create or update the secret in the host cluster
+  kubectl create secret generic "$secret_name" \
+    -n "$namespace" \
+    --from-file=config=kubeconfig-$env.yaml \
+    --dry-run=client -o yaml | kubectl apply -f -
 done
 
