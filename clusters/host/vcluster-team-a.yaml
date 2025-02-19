@@ -9,9 +9,9 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: "./clusters/vcluster"
+  path: "./clusters/vcluster"  # ✅ Correct path to vcluster.yaml
   wait: true
   postBuild:
     substitute:
-      env: team-a  # ✅ This replaces {{env}} before applying HelmRelease
+      env: team-a  # ✅ Ensure substitution is correct
 
