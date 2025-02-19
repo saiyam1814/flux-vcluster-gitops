@@ -9,6 +9,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: "./clusters/vcluster/vcluster-team-b.yaml"  # ✅ Point to specific file
+  path: "./clusters/vcluster"  # ✅ Point to specific file
   wait: true
 
