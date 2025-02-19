@@ -9,9 +9,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: "./clusters/vcluster"  # ✅ Correct path to vcluster.yaml
+  path: "./clusters/vcluster/vcluster-team-a.yaml"  # ✅ Point to specific file
   wait: true
-  postBuild:
-    substitute:
-      env: team-a  # ✅ Ensure substitution is correct
 
