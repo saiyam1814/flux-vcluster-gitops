@@ -1,15 +1,22 @@
 #!/bin/bash
 
-KUBECONFIG_PATH=~/.kube/vcluster-kubeconfig
+VCLUSTER_LIST=("vcluster1" "vcluster2")  # Add all vClusters you want
 
-echo "Generating vCluster kubeconfig..."
-vcluster connect vcluster --namespace vcluster --detach
+for VCLUSTER in "${VCLUSTER_LIST[@]}"; do
+  KUBECONFIG_PATH=~/.kube/${VCLUSTER}-kubeconfig
 
-kubectl get secret vcluster -n vcluster -o jsonpath="{.data.config}" | base64 -d > ${KUBECONFIG_PATH}
+  echo "🔄 Generating kubeconfig for ${VCLUSTER}..."
+  vcluster connect ${VCLUSTER} --namespace host-cluster --server --loginshell=false > ${KUBECONFIG_PATH}
 
-kubectl create secret generic vcluster-kubeconfig \
-  --from-file=kubeconfig=${KUBECONFIG_PATH} \
-  -n flux-system --dry-run=client -o yaml | kubectl apply -f -
+  if [[ ! -f "${KUBECONFIG_PATH}" ]]; then
+    echo "❌ Failed to generate kubeconfig for ${VCLUSTER}"
+    continue
+  fi
 
-echo "vCluster kubeconfig secret created!"
+  kubectl create secret generic ${VCLUSTER}-kubeconfig \
+    --from-file=kubeconfig=${KUBECONFIG_PATH} \
+    -n flux-system --dry-run=client -o yaml | kubectl apply -f -
+
+  echo "✅ Kubeconfig for ${VCLUSTER} stored in Kubernetes!"
+done
 

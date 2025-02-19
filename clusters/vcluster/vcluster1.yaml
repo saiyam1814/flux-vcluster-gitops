@@ -1,0 +1,22 @@
+apiVersion: loft.sh/v1
+kind: VirtualClusterInstance
+metadata:
+  name: vcluster1
+  namespace: host-cluster
+spec:
+  clusterRef:
+    name: host-cluster
+  template:
+    metadata:
+      name: vcluster-template
+    spec:
+      helmRelease:
+        chart:
+          spec:
+            chart: vcluster
+            version: "0.22.0"
+            sourceRef:
+              kind: HelmRepository
+              name: loftlabs
+              namespace: flux-system
+
